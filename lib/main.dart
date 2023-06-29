@@ -2,13 +2,21 @@
 
 import 'package:flutter/material.dart';
 import 'loginpage.dart';
+import './home/home_view.dart';
+import './home/logout.dart';
+import './localStorage/local_storage.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  var logedin = await getValueBool('is_logedin');
+  print('telah login : $logedin');
   runApp(MaterialApp(
-    initialRoute: '/', // Set the initial route
+    // initialRoute: '/', // Set the initial route
+    home: logedin ? HomeView() : LoginForm(),
     routes: {
-      '/': (context) => LoginForm(), // Route for the login page
-      // '/home': (context) => //Route for the home page
+      '/login': (context) => LoginForm(), // Route for the login page
+      '/home': (context) => HomeView(),//Route for the home page
+      '/logout': (contet) => LogoutScreen(),
       // '/signup': (context) => // Route for the signup page
     },
   ));
