@@ -2,9 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'loginpage.dart';
-import './home/home_view.dart';
-import './home/logout.dart';
-import './localStorage/local_storage.dart';
+import 'home/home_view.dart';
+import 'home/logout.dart';
+import 'localStorage/local_storage.dart';
+import 'history/history_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,6 +18,7 @@ void main() async {
       '/login': (context) => LoginForm(), // Route for the login page
       '/home': (context) => HomeView(),//Route for the home page
       '/logout': (contet) => LogoutScreen(),
+      '/history': (context) => HistoryPage(),
       // '/signup': (context) => // Route for the signup page
     },
   ));

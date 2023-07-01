@@ -59,6 +59,31 @@ class _HomeViewState extends State<HomeView> {
             ],
           ),
         ),
+        bottomNavigationBar: BottomAppBar(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            IconButton(
+              icon: Icon(Icons.history),
+              onPressed: () {
+                Navigator.pushNamed(context, '/history'); // Navigate to '/history' route
+              },
+            ),
+            IconButton(
+              icon: Icon(Icons.add),
+              onPressed: () {
+                Navigator.pushNamed(context, '/add'); // Navigate to '/add' route
+              },
+            ),
+            IconButton(
+              icon: Icon(Icons.list),
+              onPressed: () {
+                Navigator.pushNamed(context, '/todolist'); // Navigate to '/todolist' route
+              },
+            ),
+          ],
+        ),
+      ),
       ),
     );
   }
