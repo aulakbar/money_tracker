@@ -117,6 +117,15 @@ class _LoginFormState extends State<LoginForm> {
                 onPressed: _onLoginPressed,
                 child: Text('Login'),
               ),
+              SizedBox(height: 16.0),
+              Text('Don\'t have account ?'),
+              SizedBox(height: 16.0,),
+              ElevatedButton(
+                onPressed: (){
+                  Navigator.pushReplacementNamed(context, '/login');
+                }, 
+                child: Text('SignUp'))
+
             ],
           ),
         ),
