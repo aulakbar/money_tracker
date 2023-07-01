@@ -5,6 +5,7 @@ import 'loginpage.dart';
 import './home/home_view.dart';
 import './home/logout.dart';
 import './localStorage/local_storage.dart';
+import 'registerpage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -15,6 +16,7 @@ void main() async {
     home: logedin ? HomeView() : LoginForm(),
     routes: {
       '/login': (context) => LoginForm(), // Route for the login page
+      '/register': (contet) => RegistrationForm(),
       '/home': (context) => HomeView(),//Route for the home page
       '/logout': (contet) => LogoutScreen(),
       // '/signup': (context) => // Route for the signup page
