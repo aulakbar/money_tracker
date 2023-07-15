@@ -15,7 +15,7 @@ void main() async {
     home: logedin ? HomeView() : LoginForm(),
     routes: {
       '/login': (context) => LoginForm(), // Route for the login page
-      '/home': (context) => HomeView(),//Route for the home page
+      '/home': (context) => HomeView(), //Route for the home page
       '/logout': (contet) => LogoutScreen(),
       // '/signup': (context) => // Route for the signup page
     },
