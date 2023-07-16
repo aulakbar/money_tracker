@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'dart:convert';
+import './localStorage/local_storage.dart';
 
 // Define the API endpoint
 const String apiUrl = 'https://money-tracker-production-3bd6.up.railway.app/auth/login';
@@ -16,34 +18,46 @@ class _LoginFormState extends State<LoginForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   // Username and password
-  late String? _email;
-  late String? _password;
-
-  @override
-  void initState() {
-  _email = "Flutter Campus";
-  _password = "test";
-  super.initState();
-}
+  late String _email;
+  late String _password;
 
   // Handler for the login button
   void _onLoginPressed() async {
-  if (_formKey.currentState!.validate()) {
-    if (_email != null && _password != null) {
+    // Validate the form
+    if (_formKey.currentState!.validate()) {
+      // Make a POST request to the API
+      var body = jsonEncode({
+        'email': _email,
+        'password': _password,
+      });
       final response = await http.post(
         Uri.parse(apiUrl),
-        body: {
-          "email": _email,
-          "password": _password,
-        },
+        body: body,
       );
 
+      // Check the response status code
+      print(response.statusCode);
+      print(response.body);
       if (response.statusCode == 200) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Login success')),
         );
         // Navigate to the home screen
-        // Navigator.pushNamed(context, '/home');
+        print('Response Status Code: ${response.statusCode}');
+        print('Response Body: ${response.body}');
+        final Map<String, dynamic> responseData = json.decode(response.body);
+        final String token = responseData['token'];
+        final int userId = responseData['user_id'];
+        await saveValueString('token', token);
+        await saveValueInt('user_id', userId);
+        await saveValueBool('is_logedin', true);
+        int? retrievedValue = await getValueInt('user_id');
+        if (retrievedValue != null) {
+          print('user_id in local storage = $retrievedValue');
+        } else {
+          print('Value not found');
+        }
+        Navigator.pushReplacementNamed(context, '/home');
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Login failed')),
@@ -111,6 +125,12 @@ class _LoginFormState extends State<LoginForm> {
               ElevatedButton(
                 onPressed: _onLoginPressed,
                 child: Text('Login'),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, '/register');
+                },
+                child: Text('Sign Up'),
               ),
             ],
           ),
