@@ -1,66 +1,52 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import './localStorage/local_storage.dart';
 
 // Define the API endpoint
-const String apiUrl = 'https://money-tracker-production-3bd6.up.railway.app/auth/login';
+const String apiUrl = 'https://money-tracker-production-3bd6.up.railway.app/auth/register';
 
-class LoginForm extends StatefulWidget {
-  const LoginForm({super.key});
+class RegistrationForm extends StatefulWidget {
+  const RegistrationForm({Key? key}) : super(key: key);
 
   @override
-  _LoginFormState createState() => _LoginFormState();
+  _RegistrationFormState createState() => _RegistrationFormState();
 }
 
-class _LoginFormState extends State<LoginForm> {
-  // Form state
+class _RegistrationFormState extends State<RegistrationForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
-  // Username and password
+  late String _name;
   late String _email;
   late String _password;
 
-  // Handler for the login button
-  void _onLoginPressed() async {
-    // Validate the form
+  void _onRegisterPressed() async {
     if (_formKey.currentState!.validate()) {
-      // Make a POST request to the API
+      // Perform registration logic here
       var body = jsonEncode({
+        'name': _name,
         'email': _email,
         'password': _password,
+        'id_level': 2
       });
       final response = await http.post(
-        Uri.parse(apiUrl),
+        Uri.parse('$apiUrl'), // Modify the API endpoint for registration
         body: body,
       );
-
-      // Check the response status code
       print(response.statusCode);
       print(response.body);
       if (response.statusCode == 200) {
-        // Navigate to the home screen
-        print('Response Status Code: ${response.statusCode}');
-        print('Response Body: ${response.body}');
-        final Map<String, dynamic> responseData = json.decode(response.body);
-        final String token = responseData['token'];
-        final int userId = responseData['user_id'];
-        await saveValueString('token', token);
-        await saveValueInt('user_id', userId);
-        await saveValueBool('is_logedin', true);
-        int? retrievedValue = await getValueInt('user_id');
-        if (retrievedValue != null) {
-          print('user_id in local storage = $retrievedValue');
-        } else {
-          print('Value not found');
-        }
-        Navigator.pushReplacementNamed(context, '/home');
-      } else {
-        // Show an error message
+        // Registration successful, show success message
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Login failed')),
+          const SnackBar(content: Text('Registration successful')),
         );
-        print("Login Failed");
+
+        // Reset the form after registration
+        _formKey.currentState!.reset();
+      } else {
+        // Registration failed, show error message
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Registration failed')),
+        );
+        print("Registration Failed");
       }
     }
   }
@@ -70,9 +56,7 @@ class _LoginFormState extends State<LoginForm> {
     const sizedBoxSpace = SizedBox(height: 24);
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true,
-        toolbarHeight: 80,
-        title: const Text('Money Tracker'),
+        title: Text('Registration'),
       ),
       body: Form(
         key: _formKey,
@@ -83,14 +67,14 @@ class _LoginFormState extends State<LoginForm> {
               sizedBoxSpace,
               TextFormField(
                 decoration: InputDecoration(
-                  labelText: 'Username',
+                  labelText: 'Name',
                   filled: true,
                   icon: const Icon(Icons.person),
                 ),
-                onChanged: (value) => _email = value,
+                onChanged: (value) => _name = value,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter a username';
+                    return 'Please enter your name';
                   }
                   return null;
                 },
@@ -98,7 +82,22 @@ class _LoginFormState extends State<LoginForm> {
               sizedBoxSpace,
               TextFormField(
                 decoration: InputDecoration(
-                  contentPadding: EdgeInsets.all(10),
+                  labelText: 'Email',
+                  filled: true,
+                  icon: const Icon(Icons.email),
+                ),
+                onChanged: (value) => _email = value,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your email';
+                  }
+                  // You can add more complex email validation logic here if needed
+                  return null;
+                },
+              ),
+              sizedBoxSpace,
+              TextFormField(
+                decoration: InputDecoration(
                   labelText: 'Password',
                   filled: true,
                   icon: const Icon(Icons.lock),
@@ -112,16 +111,10 @@ class _LoginFormState extends State<LoginForm> {
                 },
                 obscureText: true,
               ),
-              SizedBox(height: 16),
+              sizedBoxSpace,
               ElevatedButton(
-                onPressed: _onLoginPressed,
-                child: Text('Login'),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, '/register');
-                },
-                child: Text('Sign Up'),
+                onPressed: _onRegisterPressed,
+                child: Text('Register'),
               ),
             ],
           ),

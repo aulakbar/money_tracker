@@ -5,6 +5,7 @@ import 'loginpage.dart';
 import './home/tab_controller_feature.dart';
 import './home/logout.dart';
 import './localStorage/local_storage.dart';
+import 'registerpage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -15,7 +16,8 @@ void main() async {
     home: logedin ? HomeView() : LoginForm(),
     routes: {
       '/login': (context) => LoginForm(), // Route for the login page
-      '/home': (context) => HomeView(), //Route for the home page
+      '/home': (context) => HomeView(),//Route for the home page
+      '/register': (contet) => RegistrationForm(),
       '/logout': (contet) => LogoutScreen(),
       // '/signup': (context) => // Route for the signup page
     },
