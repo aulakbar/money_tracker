@@ -116,6 +116,18 @@ class _RegistrationFormState extends State<RegistrationForm> {
                 onPressed: _onRegisterPressed,
                 child: Text('Register'),
               ),
+              SizedBox(height: 16),
+              Text('Already have account ?'),
+              SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, '/login');
+                },
+                child: Text('Login'),
+                style: ButtonStyle(
+                  fixedSize: MaterialStateProperty.all(Size(100, 0)),
+                ),
+              )
             ],
           ),
         ),

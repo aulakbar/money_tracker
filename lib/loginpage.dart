@@ -4,7 +4,8 @@ import 'dart:convert';
 import './localStorage/local_storage.dart';
 
 // Define the API endpoint
-const String apiUrl = 'https://money-tracker-production-3bd6.up.railway.app/auth/login';
+const String apiUrl =
+    'https://money-tracker-production-3bd6.up.railway.app/auth/login';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({super.key});
@@ -117,17 +118,20 @@ class _LoginFormState extends State<LoginForm> {
                 onPressed: _onLoginPressed,
                 child: Text('Login'),
                 style: ButtonStyle(
-    fixedSize: MaterialStateProperty.all(Size(100, 0)),
-  ),
+                  fixedSize: MaterialStateProperty.all(Size(100, 0)),
+                ),
               ),
+              SizedBox(height: 16),
+              Text('Doesn\'t have account ?'),
+              SizedBox(height: 16),
               ElevatedButton(
                 onPressed: () {
                   Navigator.pushNamed(context, '/register');
                 },
                 child: Text('Sign Up'),
                 style: ButtonStyle(
-    fixedSize: MaterialStateProperty.all(Size(100, 0)),
-              ),
+                  fixedSize: MaterialStateProperty.all(Size(100, 0)),
+                ),
               )
             ],
           ),
