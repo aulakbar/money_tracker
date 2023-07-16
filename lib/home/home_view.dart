@@ -12,6 +12,7 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   dynamic userDetails;
+  int _selectedIndex = 1;
 
   @override
   void initState() {
@@ -47,7 +48,7 @@ class _HomeViewState extends State<HomeView> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Text(
-                'Hello ${userDetails != null ? userDetails['name'] : 'User'}!', // Menggunakan email jika userDetails tidak null
+                '${userDetails != null ? 'Hello '+userDetails['name'] : 'Loading..'}!', // Menggunakan email jika userDetails tidak null
                 style: TextStyle(
                   fontSize: 18.0,
                   fontWeight: FontWeight.bold,
@@ -59,31 +60,44 @@ class _HomeViewState extends State<HomeView> {
             ],
           ),
         ),
-        bottomNavigationBar: BottomAppBar(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            IconButton(
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.pushNamed(context, '/add-transaction');
+          },
+          child: Icon(Icons.add),
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
               icon: Icon(Icons.history),
-              onPressed: () {
-                Navigator.pushNamed(context, '/history'); // Navigate to '/history' route
-              },
+              label: 'Histori',
             ),
-            IconButton(
-              icon: Icon(Icons.add),
-              onPressed: () {
-                Navigator.pushNamed(context, '/add'); // Navigate to '/add' route
-              },
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Home',
             ),
-            IconButton(
+            BottomNavigationBarItem(
               icon: Icon(Icons.list),
-              onPressed: () {
-                Navigator.pushNamed(context, '/todolist'); // Navigate to '/todolist' route
-              },
+              label: 'Todo List',
             ),
           ],
+          currentIndex: _selectedIndex,
+          onTap: (int index) {
+            setState(() {
+              _selectedIndex = index;
+              if (_selectedIndex == 0) {
+                // Navigasi ke halaman histori
+                Navigator.pushReplacementNamed(context, '/history');
+              } else if (_selectedIndex == 1) {
+                // Navigasi ke halaman tambah
+                Navigator.pushReplacementNamed(context, '/home');
+              } else if (_selectedIndex == 2) {
+                // Navigasi ke halaman to-do list
+                Navigator.pushReplacementNamed(context, '/todolist');
+              }
+            });
+          },
         ),
-      ),
       ),
     );
   }
