@@ -82,14 +82,14 @@ class _RegistrationFormState extends State<RegistrationForm> {
               sizedBoxSpace,
               TextFormField(
                 decoration: InputDecoration(
-                  labelText: 'Email',
+                  labelText: 'Username',
                   filled: true,
                   icon: const Icon(Icons.email),
                 ),
                 onChanged: (value) => _email = value,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter your email';
+                    return 'Please enter your username';
                   }
                   // You can add more complex email validation logic here if needed
                   return null;
