@@ -39,9 +39,6 @@ class _LoginFormState extends State<LoginForm> {
       print(response.statusCode);
       print(response.body);
       if (response.statusCode == 200) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Login success')),
-        );
         // Navigate to the home screen
         print('Response Status Code: ${response.statusCode}');
         print('Response Body: ${response.body}');
@@ -59,20 +56,14 @@ class _LoginFormState extends State<LoginForm> {
         }
         Navigator.pushReplacementNamed(context, '/home');
       } else {
+        // Show an error message
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Login failed')),
         );
         print("Login Failed");
       }
-    } else {
-      // Handle the case when _email or _password is null
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Email or password is missing')),
-      );
     }
   }
-}
-
 
   @override
   Widget build(BuildContext context) {
@@ -92,14 +83,14 @@ class _LoginFormState extends State<LoginForm> {
               sizedBoxSpace,
               TextFormField(
                 decoration: InputDecoration(
-                  labelText: 'email',
+                  labelText: 'Username',
                   filled: true,
                   icon: const Icon(Icons.person),
                 ),
                 onChanged: (value) => _email = value,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter an email';
+                    return 'Please enter a username';
                   }
                   return null;
                 },
@@ -125,13 +116,19 @@ class _LoginFormState extends State<LoginForm> {
               ElevatedButton(
                 onPressed: _onLoginPressed,
                 child: Text('Login'),
+                style: ButtonStyle(
+    fixedSize: MaterialStateProperty.all(Size(100, 0)),
+  ),
               ),
               ElevatedButton(
                 onPressed: () {
                   Navigator.pushNamed(context, '/register');
                 },
                 child: Text('Sign Up'),
+                style: ButtonStyle(
+    fixedSize: MaterialStateProperty.all(Size(100, 0)),
               ),
+              )
             ],
           ),
         ),
